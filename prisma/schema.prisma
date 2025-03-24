@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                     Int     @id @default(autoincrement())
+  name                   String  @unique
+  hashedPassword         String
+  email                  String  @unique
+  verifiedEmail          Boolean
+  authenticationPassword Int //ログイン時の認証パスワード
+
+  Phone Phone[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Phone {
+  id                Int    @id @default(autoincrement())
+  hashedPhoneNumber String //末尾4字以外ハッシュ化
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

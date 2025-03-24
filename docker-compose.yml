@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  dev-postgres:
+    image: postgres:14.4-alpine
+    ports:
+      - 5434:
+    environment:
+      POSTGRES_USER: smsauthv2
+      POSTGRES_PASSWORD: smsauthv2
+      POSTGRES_DB: smsauthv2
+    restart: always
+    networks:
+      - lesson
+networks:
+  lesson:
