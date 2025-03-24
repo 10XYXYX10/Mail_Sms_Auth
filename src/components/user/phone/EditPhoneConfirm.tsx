@@ -67,7 +67,7 @@ const EditPhoneConfirm = ({
                     const statusCode = err.response.status;
                     if(statusCode===401){
                         alert(message);
-                        return router.push('/auth');             
+                        return router.push('/auth');
                     }else if(statusCode===408){
                         setProcessNum(1);
                     }

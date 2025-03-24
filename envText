@@ -1,8 +1,6 @@
 NEXT_PUBLIC_APP_URL='http://localhost:3000'
 NEXT_PUBLIC_API_URL='http://localhost:3000/api'
 
-DATABASE_URL="postgresql://smsauthv2:smsauthv2@localhost:5434/smsauthv2?schema=public"
-
 JWT_HASH_KEY='jwtHashKey'#任意のランダムな半角英数字の文字列
 
 VonageApiKey='yourVonageApiKey'
@@ -13,3 +11,10 @@ GMAIL_PASS='yourAppliPassword'
 
 UPSTASH_REDIS_REST_URL='https://yourEndpoint'
 UPSTASH_REDIS_REST_TOKEN='yourPassword'
+
+DATABASE_URL="postgresql://smsauthv2:smsauthv2@localhost:5434/smsauthv2?schema=public"
+# ■コンテナのポートが被ってる場合、起動や接続に失敗します。以下のコマンドで、起動コンテナを確認した後、停止してから、新たなコンテナを起動させましょう
+#  - 確認：docker ps
+#  - 停止：docker stop ＜CONTAINER ID＞
+#  - 起動：docker compose up -d
+#  - 確認：docker ps
