@@ -11,8 +11,8 @@ export async function PUT(request: NextRequest) {
     try{
         //////////
         //■[ rateLimit ] ← 何度も更新されたら、vonageの利用料金が嵩むのでrateLimitで保護
-        // const rateLimitResult = await rateLimit()
-        // if(!rateLimitResult.success) return NextResponse.json( {message:rateLimitResult.message}, {status:429});//429 Too Many Requests
+        const rateLimitResult = await rateLimit()
+        if(!rateLimitResult.success) return NextResponse.json( {message:rateLimitResult.message}, {status:429});//429 Too Many Requests
 
         //////////
         //■[ セキュリティー ]
@@ -51,22 +51,21 @@ export async function PUT(request: NextRequest) {
         const phoneData = checkUser.Phone[0];
 
         const hashedPhoneNumber = phoneData?.hashedPhoneNumber || '';
-        // if(hashedPhoneNumber){
-        //     //更新処理：既存の番号と比較し、同じなら、処理の必要無しと判断
-        //     const headNumber7 = phoneNumber.slice(0,7);
-        //     const lastNumber4 = phoneNumber.slice(-4);
-        //     const hashedHeadNumber7 = hashedPhoneNumber.slice(0,-4);
-        //     const hashedLastNumber4 = hashedPhoneNumber.slice(-4);
-        //     if(lastNumber4===hashedLastNumber4){
-        //         try{
-        //             const result = await bcrypt.compare(headNumber7, hashedHeadNumber7);
-        //             if(result)return NextResponse.json( {message:'The same phone number as the one currently registered.'}, {status:400});
-        //         }catch(err){
-        //             throw err;
-        //         }
-        //     }
-
-        // }
+        if(hashedPhoneNumber){
+            //更新処理：既存の番号と比較し、同じなら、処理の必要無しと判断
+            const headNumber7 = phoneNumber.slice(0,7);
+            const lastNumber4 = phoneNumber.slice(-4);
+            const hashedHeadNumber7 = hashedPhoneNumber.slice(0,-4);
+            const hashedLastNumber4 = hashedPhoneNumber.slice(-4);
+            if(lastNumber4===hashedLastNumber4){
+                try{
+                    const result = await bcrypt.compare(headNumber7, hashedHeadNumber7);
+                    if(result)return NextResponse.json( {message:'The same phone number as the one currently registered.'}, {status:400});
+                }catch(err){
+                    throw err;
+                }
+            }
+        }
 
         //////////
         //■[ 6桁の認証パスワードを生成 ]
@@ -115,8 +114,8 @@ export async function PATCH(request: NextRequest) {
     try{
         //////////
         //■[ rateLimit ] ← vonageを利用するわけではないのでの利用料金の心配はないが、ブルートフォースで突破されても厄介なので一応レートリミット
-        // const rateLimitResult = await rateLimit()
-        // if(!rateLimitResult.success) return NextResponse.json( {message:rateLimitResult.message}, {status:429});//429 Too Many Requests
+        const rateLimitResult = await rateLimit()
+        if(!rateLimitResult.success) return NextResponse.json( {message:rateLimitResult.message}, {status:429});//429 Too Many Requests
 
         //////////
         //■[ セキュリティー ]
